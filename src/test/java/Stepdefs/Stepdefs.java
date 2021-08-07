@@ -18,8 +18,8 @@ import java.util.concurrent.TimeUnit;
 public class Stepdefs {
 
     WebDriver driver;
-    String url = "https://parabank.parasoft.com/parabank/index.html";
-    String username = "John";
+    String url = "https://parabank.parasoft.com/parabank/index.htm";
+    String username = "john";
     String password = "demo";
     Scenario scenario;
 
@@ -30,7 +30,7 @@ public class Stepdefs {
 
     @After
     public void cleanUp(){
-        driver.quit();
+       // driver.quit();
     }
 
     @Given("user opened the browser")
@@ -72,9 +72,9 @@ public class Stepdefs {
         user_enter_the_username_as_and_password_as_and_click_the_login_button(username,password);
     }
 
-    @Given("user clicked on link {string}")
-    public void user_clicked_on_link(String linkname){
-        driver.findElement(By.linkText(linkname)).click();
+    @Given("user clicked on link Open New Account")
+    public void user_clicked_on_link_open_new_account(){
+        driver.findElement(By.linkText("Open New Account")).click();
     }
 
     @When("user select account as {string} and account number as{string}")
@@ -90,7 +90,7 @@ public class Stepdefs {
 
     }
 
-    @When("user select account as {string} and account number")
+   @When("user select account as {string} and account number")
     public void user_select_account_as_and_account_number_as(String type)
     {
         WebElement dropdownAccType = driver.findElement(By.id("type"));
@@ -103,9 +103,9 @@ public class Stepdefs {
 
     }
 
-    @When("user clicks on Button Open New Account")
-    public void user_clicks_on_button_Open_New_Account()
-    {
+    @When("user clicks on Button {string}")
+    public void user_clicks_on_button_Open_New_Account(String string) throws InterruptedException {
+        Thread.sleep(5000);
         driver.findElement(By.xpath("//input[@type='submit' and @value='Open New Account']")).click();
     }
 
