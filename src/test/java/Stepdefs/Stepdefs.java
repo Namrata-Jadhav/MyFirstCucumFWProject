@@ -123,4 +123,35 @@ public class Stepdefs {
        scenario.log("Newly Generated Account is: " +account_number);
     }
 
+    @Given("user clicked on link {string}")
+    public void user_clicked_on_link(String string) {
+        driver.findElement(By.linkText("Transfer Funds"));
+    }
+
+    @When("User enters the{string}to be transferred")
+    public void user_enters_the_amount_to_be_transferred(String amount) {
+
+        driver.findElement(By.xpath("//input[@id=amount , @type=text]]")).sendKeys(amount);
+    }
+    @When("user selects first account number {Account_Number1} which to transfer and another account number {Account_Number2} which to be transferred")
+    public void user_selects_first_account_number_from_which_to_transfer_and_another_account_number_in_which_to_be_transferred(String FromAccountNumber, String ToAccountNumber) {
+        WebElement dropdownAccNumber1 = driver.findElement(By.id("fromAccountId"));
+        Select selectAccType = new Select(dropdownAccNumber1);
+        selectAccType.selectByVisibleText("FromAccountNumber");
+
+        WebElement dropdownAccNumber2 = driver.findElement(By.id("ToAccountId"));
+        Select selectAccNumber = new Select(dropdownAccNumber2);
+        selectAccNumber.selectByVisibleText("ToAccountNumber");
+    }
+    @When("User clicks on {string} button")
+    public void user_clicks_on_button(String string) {
+        driver.findElement(By.xpath("//input[@id='submit' and @value='Transfer']")).click();
+    }
+
+    @Then("{string} message will be displayed")
+    public void message_willbe_displayed(String string1) {
+        WebElement element = driver.findElement(By.xpath("//h1[text()='Transfer Complete!']"));
+        Assert.assertEquals(element.isDisplayed(),true,"Amount transferred successfully");
+    }
+
 }
