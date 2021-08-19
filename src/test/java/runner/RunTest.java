@@ -6,10 +6,10 @@ import io.cucumber.testng.CucumberOptions;
 @CucumberOptions(
         features = "classpath:Features",
         glue = "Stepdefs",
-        tags  ="@OpenNewAccount",
+        tags  ="@BillPayFeature",
         plugin = {"pretty", "html:target/cucumber-reports.html"},
         dryRun = false
 )
-public class RunTest extends AbstractTestNGCucumberTests {
+class RunTest extends AbstractTestNGCucumberTests {
 
 }
