@@ -192,9 +192,9 @@ public class Stepdefs {
         }
 
     @Then("message willbe displayed as {string}")
-    public void message_willbe_displayed_as(String string) {
+    public void message_willbe_displayed_as(String string) throws InterruptedException {
+        Thread.sleep(5000);
         WebElement element = driver.findElement(By.xpath("//h1[text()='Bill Payment Complete']"));
-        Assert.assertEquals(element.isDisplayed(),true,"Payment of bill is successful Message");
+        Assert.assertEquals(element.isDisplayed(),true,"Payment of bill is successful Message" );
     }
-
 }
