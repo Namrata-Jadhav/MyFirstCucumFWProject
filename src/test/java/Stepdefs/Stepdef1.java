@@ -8,9 +8,11 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 @Log4j2
+
 public class Stepdef1 {
 
     public void newMethod(){
+
         log.debug("Inside new method");
     }
 }

@@ -56,11 +56,13 @@ public class Stepdefs {
     @Given("user opened the browser")
     public void user_opened_the_browser() {
        String browserName= System.getProperty("browser");
-        driver =  DriverFactory.createInstance("browser");
+        driver =  DriverFactory.createInstance(browserName);
         driver = new ChromeDriver();
         log.debug("browser is opened");
+
         driver.manage().window().maximize();
         log.debug("browser is maximised");
+
         driver.manage().deleteAllCookies(); //delete all cookies
         log.debug("deleted cookies");
         driver.manage().timeouts().implicitlyWait(30, TimeUnit.SECONDS);
