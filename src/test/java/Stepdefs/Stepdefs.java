@@ -1,21 +1,24 @@
 package Stepdefs;
 
-import io.cucumber.java.After;
-import io.cucumber.java.Before;
-import io.cucumber.java.Scenario;
+import io.cucumber.java.*;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
-import org.openqa.selenium.By;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
+import lombok.extern.log4j.Log4j2;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.openqa.selenium.*;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.support.ui.Select;
 import org.testng.Assert;
+import utils.DriverFactory;
 
 import java.time.temporal.TemporalAmount;
+import java.util.List;
+import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
+@Log4j2
 public class Stepdefs {
 
     WebDriver driver;
@@ -31,20 +34,42 @@ public class Stepdefs {
 
     @After
     public void cleanUp(){
-       // driver.quit();
+      // driver.quit();
+    }
+
+    @BeforeStep
+    public void beforeEachStep(){
+        scenario.log("Executed before step");
+    }
+    @AfterStep
+    public void afterEachStep(){
+        if(!(driver==null)) {
+            TakesScreenshot scrnShot = (TakesScreenshot) driver;
+            byte[] data = scrnShot.getScreenshotAs(OutputType.BYTES);
+            scenario.attach(data, "image/png", "Failed step names:" + scenario.getName());
+            scenario.log("Executed after step");
+        }
+        scenario.log("Executed after step");
+        log.debug("Each step hook is executed, screen shot is taken");
     }
 
     @Given("user opened the browser")
     public void user_opened_the_browser() {
+       String browserName= System.getProperty("browser");
+        driver =  DriverFactory.createInstance("browser");
         driver = new ChromeDriver();
+        log.debug("browser is opened");
         driver.manage().window().maximize();
-        driver.manage().deleteAllCookies();
+        log.debug("browser is maximised");
+        driver.manage().deleteAllCookies(); //delete all cookies
+        log.debug("deleted cookies");
         driver.manage().timeouts().implicitlyWait(30, TimeUnit.SECONDS);
     }
 
     @Given("user navigated to the application url")
     public void user_navigated_to_the_application_url() {
         driver.get(url);
+        log.debug("url navigated");
     }
 
     @When("user enter the username as {string} and password as {string} and click the login button")
@@ -52,8 +77,11 @@ public class Stepdefs {
     {
 
         driver.findElement(By.name("username")).sendKeys(username);
+        log.debug("username entered: "+username);
         driver.findElement(By.name("password")).sendKeys(password);
+        log.debug("password entered: "+password);
         driver.findElement(By.xpath("//input[@value='Log In']")).click();
+        log.debug("login button clicked");
     }
 
     @Then("user is able to login in the application")
@@ -81,12 +109,12 @@ public class Stepdefs {
 
 
    @When("user select account as {string} and account number")
-    public void user_select_account_as_and_account_number_as(String type)
-    {
+    public void user_select_account_as_and_account_number_as(String type) throws InterruptedException {
         WebElement dropdownAccType = driver.findElement(By.id("type"));
         Select selectAccType = new Select(dropdownAccType);
         selectAccType.selectByVisibleText(type);
 
+        Thread.sleep(5000);
         WebElement dropdownAccNumber = driver.findElement(By.id("fromAccountId"));
         Select selectAccNumber = new Select(dropdownAccNumber);
         selectAccNumber.selectByIndex(0);
@@ -197,4 +225,57 @@ public class Stepdefs {
         WebElement element = driver.findElement(By.xpath("//h1[text()='Bill Payment Complete']"));
         Assert.assertEquals(element.isDisplayed(),true,"Payment of bill is successful Message" );
     }
+
+    @Given("I want to do something")
+    public void i_want_to_do_something(){
+    }
+
+    @When("I have a argumentts to send as")
+    public void i_have_a_argument_to_send_as(String arg) {
+        System.out.println("Arguments to be passed as: "+arg);
+    }
+
+    @When("I have a list of students to send as")
+    public void i_have_a_list_of_students_to_send_as(List<String> list) {
+        // Write code here that turns the phrase above into concrete actions
+        // For automatic transformation, change DataTable to one of
+        // E, List<E>, List<List<E>>, List<Map<K,V>>, Map<K,V> or
+        // Map<K, List<V>>. E,K,V must be a String, Integer, Float,
+        // Double, Byte, Short, Long, BigInteger or BigDecimal.
+        //
+        // For other transformations you can register a DataTableType.
+        System.out.println(list.toString());
+    }
+
+    @When("I have a list of students and their marks to send as")
+    public void i_have_a_list_of_students_and_their_marks_to_send_as(Map<String, String> map ) {
+        // Write code here that turns the phrase above into concrete actions
+        // For automatic transformation, change DataTable to one of
+        // E, List<E>, List<List<E>>, List<Map<K,V>>, Map<K,V> or
+        // Map<K, List<V>>. E,K,V must be a String, Integer, Float,
+        // Double, Byte, Short, Long, BigInteger or BigDecimal.
+        //
+        // For other transformations you can register a DataTableType.
+        System.out.println(map.toString());
+    }
+
+    @Then("Something should happen")
+    public void something_should_happen() {
+
+    }
+
+
+    @Given("i am on the search page")
+    public void i_am_on_the_search_page() {
+
+    }
+    @When("I search for the product: {string}")
+    public void i_search_for_the_product_computer(String string) {
+        System.out.println("Product searched: "+string);
+    }
+    @Then("Search result should be displayed to {string}")
+    public void search_result_should_be_displayed_to(String string) {
+        System.out.println("Product search success: "+string);
+    }
+
 }

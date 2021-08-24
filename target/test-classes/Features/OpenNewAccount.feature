@@ -8,3 +8,4 @@ Feature: Open New Account Feature
     And user clicks on Button "OPEN NEW ACCOUNT"
     Then "Account Opened!" message is displayed
     And a new account number is generated
+
