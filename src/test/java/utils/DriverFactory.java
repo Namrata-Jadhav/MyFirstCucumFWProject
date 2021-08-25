@@ -9,9 +9,9 @@ import org.testng.Assert;
 
         public static WebDriver createInstance(String browserName) {
 
-            WebDriver driver=null;
+            WebDriver driver = null;
 
-            switch (browserName.trim().toLowerCase()){
+                switch (browserName.trim().toLowerCase()){
                 case "chrome":
                     driver = new ChromeDriver();
                     break;

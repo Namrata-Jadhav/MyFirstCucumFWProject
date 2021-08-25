@@ -27,38 +27,13 @@ public class Stepdefs {
     String password = "demo";
     Scenario scenario;
 
-    @Before
-    public void setUp(Scenario scenario){
-        this.scenario = scenario;
-    }
-
-    @After
-    public void cleanUp(){
-      // driver.quit();
-    }
-
-    @BeforeStep
-    public void beforeEachStep(){
-        scenario.log("Executed before step");
-    }
-    @AfterStep
-    public void afterEachStep(){
-        if(!(driver==null)) {
-            TakesScreenshot scrnShot = (TakesScreenshot) driver;
-            byte[] data = scrnShot.getScreenshotAs(OutputType.BYTES);
-            scenario.attach(data, "image/png", "Failed step names:" + scenario.getName());
-            scenario.log("Executed after step");
-        }
-        scenario.log("Executed after step");
-        log.debug("Each step hook is executed, screen shot is taken");
-    }
 
     @Given("user opened the browser")
     public void user_opened_the_browser() {
        String browserName= System.getProperty("browser");
         driver =  DriverFactory.createInstance(browserName);
         driver = new ChromeDriver();
-        log.debug("browser is opened");
+        log.debug("browser is Initialised");
 
         driver.manage().window().maximize();
         log.debug("browser is maximised");
