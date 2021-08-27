@@ -7,10 +7,8 @@ import org.testng.Assert;
 
     public class DriverFactory {
 
-        public static WebDriver createInstance(String browserName) {
-
-            WebDriver driver = null;
-
+        public static WebDriver createInstance(String browserName){
+        WebDriver driver=null;
                 switch (browserName.trim().toLowerCase()){
                 case "chrome":
                     driver = new ChromeDriver();
